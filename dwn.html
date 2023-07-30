@@ -1,0 +1,249 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+
+    .row , .col , .col-6 , .col-8 ,.col-2 , .col-3 {
+        border: 0.5px rgb(60, 60, 60) solid;
+    }
+
+.row > .col {
+    border: none;
+}
+
+.row > .col > .row {
+    margin-bottom: 0;
+}
+.row:not(:first-child),
+.row:not(:first-child) > .col {
+    border-top: none !important;
+}
+
+  body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    .left-column {
+        background: #c2e59c;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to bottom, #c2e59c, #64b3f4);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to bottom, #c2e59c, #64b3f4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      width: 80px; /* Set the width of the left column */
+    }
+    .right-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 10px;
+}
+
+ body{
+    font-size: 18px;
+ }
+</style>
+</head>
+<body >
+    <div class="left-column mh-100"></div>
+    <img  class="right-image" style="border-radius: 10px; width: 200px; margin-top: 20px;" src="{% static 'edify-logo.jpeg' %}" alt="">
+
+    <div  class="container text-center mh-100" style="position: relative; margin-top: 12%;"> 
+
+        <div class="row">
+            <div class="col-12"><h3>Invoice</h3></div>
+
+            <div class="col-6 text-left">
+                <div class="row">
+                    kind Attn. 
+                </div>
+                KAVYA RATNA CHAVALI 
+                <br>
+                    SHIV SHIVAM B WING 501, OSHIWARA, ADARSH NAGAR, 
+            ANDHERI WEST. MUMBAI 53
+            <br> <br> GST NO 27AGSPC7785J1ZM
+            </div>
+            <div class="col-6 text-left font-weight-bold">
+                EDIFY Labs
+                <br>
+                Fourth Floor , WeWork , Zenia Building , <br>
+                Hiranandani Estate , Thane West <br>
+                Thane 400607
+                <div class="row text-left border-0">
+                    <div class="col-4  border-0">Tel</div>
+                    <div class="col-8  border-0 font-weight-normal">
+                        9819000257
+                    </div>
+                    <div class="col-4  border-0">E-Mail</div>
+                    <div class="col-8  border-0 font-weight-normal">
+                        info@edifylabs.com
+                    </div>
+                    <div class="col-4  border-0">Website</div>
+                    <div class="col-8  border-0 font-weight-normal">
+                        www.edifylabs.com
+                    </div>
+             </div>
+            
+            </div>
+        </div>
+        <!-- empty -->
+        <div class="row">
+            <div class="col-4">&nbsp;</div>
+            <div class="col-8">&nbsp;</div>
+        </div>
+      
+      <!-- number -->
+        <div class="row text-left">
+            <div class="col-2 font-weight-bold">
+                Invoice No.
+            </div>
+            <div class="col-6">
+                ELG 23/3/1
+            </div>
+            <div class="col-4 bg-danger">
+               <p class="font-weight-bold">Date: <span style="margin-left: 50%;">09-Mar-23</span>  </p> 
+            </div>
+        </div>
+        <div class="row p-2">
+            &nbsp;
+        </div>
+        <!-- particular -->
+           
+
+            <div class="row">
+                <div class="col-2 d-flex align-items-center justify-content-center font-weight-bold">
+                    S.NO
+                </div>
+                <div class="col d-flex flex-column justify-content-center">
+                    <div class="d-flex flex-column align-items-center font-weight-bold">
+                        PARTICULAR
+                    </div>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-center font-weight-bold">
+                    AMOUNT
+                </div>
+            </div>
+            
+            <div class="row" style="height: 550px;">
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    1
+                </div>
+                <div class="col d-flex flex-column justify-content-center">
+                    <div class="d-flex flex-column text-left">
+                        Make It Happen Coaching <br>
+                        KAVYA RATNA CHAVALI for 4 Weeks
+                    </div>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-center border-bottom-0">
+                    60,000.00 <br>
+(20,000.00)
+                </div>
+            </div>
+
+            
+        <div class="row">
+            
+            <div class="col">
+                <p class="text-left font-weight-bold">Amount in Words</p> 
+                <h5>Forty Seven Thousand Two Hundred Only</h5> 
+            </div>
+            <div class="col">
+                <div class="row border-top-0">
+                <div class="col">Total Amount</div>
+                </div>
+                <div class="row">
+                <div class="col">CGST @ 9%</div>
+                </div>
+                <div class="row">
+                <div class="col">SGST @9%</div>
+                </div>
+                <div class="row border-bottom-0">
+                <div class="col font-weight-bold">Total Amount Payable</div>
+                </div>
+            </div>
+            
+            <div class="col-2 border-0">
+                <div class="row border-top-0">
+                <div class="col font-weight-bold">40,000.00</div>
+                </div>
+                <div class="row">
+                <div class="col">3,600.00</div>
+                </div>
+                <div class="row">
+                <div class="col">3,600.00</div>
+                </div>
+                <div class="row border-bottom-0">
+                <div class="col font-weight-bold">47,200.00</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ed -->
+        <div class="row text-left">
+            <!-- Payment Options: -->
+    
+                <div class="col-12"><h5>Payment options :-</h5></div>
+           
+             
+                <div class="col-2  border-0">a) </div>
+                <div class="col-8  border-0">
+                    Payment can be made through cheque/DD in favour of <strong>EDIFY Labs and Direct NEFT</strong> 
+                    payable at Mumbai.
+                </div>
+                <div class="col-2 border-0"> &nbsp;</div>
+                
+                <div class="col-2 border-0">Note : </div>
+                <div class="col-6 border-0">
+                    Payments received by EDIFY Labs are non-refundable.
+                </div>
+                <div class="col-4 text-center border-0 font-weight-bold">
+                    For EDIFY Lab <br>
+                    AUTHORIZED SIGNATORY</div>
+
+        </div>
+
+        <div class="row text-left ">
+            <div class="col-3 font-weight-bold border-top-0 border-bottom-0">PAN NO</div>
+            <div class="col-9">AHTPG2240C</div>
+        </div>
+        <div class="row text-left">
+            <div class="col-3 font-weight-bold border-top-0 border-bottom-0">GST REGN. NO</div>
+            <div class="col-9">27AHTPG2240C1ZM</div>
+        </div>
+        <div class="row text-left ">
+            <div class="col-3 font-weight-bold border-top-0 border-bottom-0">SAC NO</div>
+            <div class="col-9">999293</div>
+        </div>
+
+        <p class="mt-4">
+            EDIFY LABS , Fourth Floor, WEWORK Zenia, Hiranandani Estate, Thane West <br>
+Website : www.livingtheunlived.com ; Customer Care : 80 80 024 024
+        </p>
+    </div>
+
+
+      
+</body>
+<footer>
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; display: flex; justify-content: center;">
+        <button onclick="hideButton()" class="download-btn" id="download">Download as PDF</button>
+      </div>
+</footer>
+
+<script>
+    const downloadBtn = document.querySelector(".download-btn");
+
+downloadBtn.addEventListener("click", () => {
+  window.print();
+});
+
+function hideButton() {
+        document.getElementById("download").style.display = "none";
+    }
+
+</script>
+
+</html>

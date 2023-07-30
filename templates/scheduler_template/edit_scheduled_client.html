@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<br> <br>
+<div class="container  mt-5">
+
+    <div class="row ">
+      <div class="col-6">
+        <p class="float-start">  👋 Hello , You are editing details for  <strong>{{schedule.first_name_S}} {{schedule.last_name_S}} ({{schedule.coaching_type_course}})</strong> </p>
+      </div>
+  
+      <div class="col-6">
+        {% if schedule_list %}
+        <p class="float-end">Total number of scheduled clients : <strong>{{schedule_list|length}} </strong></p>
+        {% endif %}
+        {% if schedule_list_filtered %}
+        <p class="float-end">Total scheduled: <strong>{{schedule_list_filtered|length}} </strong></p>
+        {% endif %}
+      </div>  
+    </div>
+  
+  </div>
+
+<div class="container w-75 bg-white  p-3  rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; margin-top: 3%;">
+
+    <form action="{% url 'edit_schedule' schedule.id %}"  method="POST" autocomplete="on">
+      {% csrf_token %}
+        <div class="row g-3">
+  
+          <div class="col-md-5">
+            <label for="firstName" class="form-label">First name</label>
+            {{ScheduleForm.first_name_S|as_crispy_field}}
+          </div>
+  
+          <div class="col-md-5">
+            <label for="lastName" class="form-label">Last name</label>
+            {{ScheduleForm.last_name_S|as_crispy_field}}
+          </div>
+  
+          <div class="col-md-2" >
+            <label for="review_call" class="form-label">Review call  </label>
+           {{ScheduleForm.review_call|as_crispy_field|safe}}
+          </div>
+  
+          <div class="col-md-4" >
+            <label for="coaching" class="form-label">Coaching Type</label>
+            {{ScheduleForm.coaching_type_course|as_crispy_field|safe}}
+          </div>
+  
+  
+          <div class="col-md-4" >
+            <label for="sessions" class="form-label">Session Start</label>
+            {{ScheduleForm.sessions|as_crispy_field}}
+          </div>
+  
+  
+          <div class="col-md-4" >
+            <label for="my_time_field" class="form-label">Session End</label>
+            {{ScheduleForm.my_time_field|as_crispy_field}}
+          </div>
+  
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-12 ">
+            <hr>
+            <div class="col-md-12 text-center ">
+              <button style="background-color:#7d85a5;" type="submit" class="btn  btn-block btn-lg text-white float-end ">
+                <i class="fa-regular fa-calendar-check" style="color: #ffffff;"></i>
+                Schedule client
+              </button>
+            </div>
+          </div>
+        </div>
+  
+    </form>
+  
+</div>
+{% include 'footer.html' %}
+  {% endblock content %}

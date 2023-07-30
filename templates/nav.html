@@ -1,0 +1,78 @@
+{% load static %}
+{% block content %}
+
+<style>
+
+.box  {
+  padding: 80px 0 8px;
+  position: relative;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 150px;
+  height: 16px;
+  transform: skew(-12deg) translateX(-50%);
+  background: #f0f567;
+  z-index: -1;
+
+}
+.nav-item.active .nav-link {
+    color: red; /* Change the color to your desired color */
+    
+  }
+
+  li{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+</style>
+
+
+<nav class="navbar navbar-expand-lg navbar-scroll fixed-top shadow-0 rounded-bottom ">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img style="border-radius: 10px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" width="100px" src="{% static 'edify-logo.jpeg' %}" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link btn btn-light" href="{% url 'invoice_dashboard' %}" target="_blank" title="INVOICE">INVOICE <i class="fa-solid fa-file-invoice" style="color: #5f6a7c;"></i></a>
+          </li>
+          <li style="margin-left:10px ;"  class="nav-item">
+            <a class="nav-link btn btn-light" href="{% url 'visualizer_home' %}" target="_blank" title="VISUALIZER">VISUALIZER <i class="fa-solid fa-chart-line" style="color: #5f6a7c;"></i></a>
+          </li>
+          <li style="margin-left:10px ;" class="nav-item">
+            <a class="nav-link btn btn-light" href="http://127.0.0.1:8000/admin/clientsapp/course/" target="_blank" title="COURSE"> <i class="fa-solid fa-book-medical" style="color: #5f6a7c;"></i></a>
+          </li>
+          <li class="nav-item" style="margin-left:10px ;">
+            <a class="nav-link btn btn-light" href="{% url 'logout' %}" title="LOGOUT"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+          </li>
+
+          <li style="margin-left:10px ;" class="nav-item rounded">
+            <a class="nav-link btn btn-light border border-success rounded" href="{% url 'admin:index' %}" title="ADMIN" target="_blank"> <i class="fa-solid fa-user-secret" style="color: #5f6a7c;"></i></a>
+          </li>
+          {% else %}
+          <!-- <li style="margin-left:10px ;" class="nav-item">
+            <a class="nav-link btn btn-dark text-white" href="{% url 'loginPage' %}">Get Started</a>
+          </li> -->
+          <li style="margin-left:10px ;" class="nav-item">
+            <a class="nav-link btn btn-dark text-white" href="{% url 'admin:index' %}">Admin</a>
+          </li>
+          <!-- http://127.0.0.1:8000/admin/ <button type="button" class="btn btn-dark"><a class="text-white nav-link btn" href="{% url 'loginPage' %}">Get Started</a></button> -->
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+</html>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br> <br>
+<div class="container  mt-5">
+
+    <div class="row ">
+      <div class="col-6">
+        <p class="float-start">  👋 Hello , <strong>{{auth_user}}</strong>, -> All Scheduled Clients</p>
+      </div>
+  
+      <div class="col-6">
+        {% if schedule_list %}
+        <p class="float-end"> <i class="fa-solid fa-calendar-days"></i> Total scheduled clients : <strong>{{schedule_list|length}} </strong></p>
+        {% endif %}
+        {% if schedule_list_filtered %}
+        <p class="float-end"> <i class="fa-solid fa-calendar-days"></i> Total scheduled: <strong>{{schedule_list_filtered|length}} </strong></p>
+        {% endif %}
+      </div>  
+    </div>
+  
+  </div>
+
+<!-- SEARCH search_client_schedule  -->
+<div class="container mt-3" style="overflow-x:auto">
+    <form method="POST" action="{% url 'all_scheduled_clients' %}" class="form-inline"">
+        {% csrf_token %}
+          <div style="display: inline-block;" class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+
+                <div class="input-group">
+                    <input  type="text" name="title" class="form-control rounded" placeholder="Search already added Clients to schedule"  />
+                    <button type="submit" class="btn btn-primary form-submit-button"> <i class="fas fa-search"></i></button>
+                    <a  href="{% url 'schedule_client' %}" class="link-dark btn bg-secondary " title="schedule a client">
+                        <i class="fa-solid fa-clock " style="color: #ffffff;"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<!-- SHOWING ALL SCHEDULED CLIENTS -->
+    <!-- ERROR -->
+    {% if error %}
+    <div class="mute text-center mt-4 mb-4 container w-50">
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+       {{ error }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+    {% endif %}
+
+{% if schedule_list %}
+
+<div class="container bg-white  p-2  rounded mt-3">
+
+  <div class="mute text-center mt-4 mb-4 container w-50">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      These are the clients have been registered to Schedule a call.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+ 
+  <form method="post" class="bg-white  p-2  rounded" action="{% url 'scheduled_clients_delete' %}">
+    {% csrf_token %}
+  <table class="table ">
+    <thead class="border-bottom  fw-bold">
+        <tr>
+            <td>id</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Course</td>
+            <td>Session Start</td>
+            <td>Session Ends</td>
+            <td>Session no.</td>
+            <td>Review  call</td>
+            <td class="text-center " width="20%">
+              <a href="{% url 'all_scheduled_clients' %}" title="Refresh" class="btn">
+                <i class="fa-solid fa-arrows-rotate fa-lg"></i> 
+              </a>
+
+              <button type="submit" class="btn" title="Delete">
+                  <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+              </button>
+              
+              <!-- EXCEL -->
+              <a href="{% url 'download_scheduled_clients_excel' %}" class="btn"  title="download to excel">
+                  <i class="fa-solid fa-file-excel fa-lg" style="color: #63efae;"></i>
+              </a>
+          </td>
+        </tr>
+    </thead>
+    <tbody  style="vertical-align: middle;">
+        {% for scheduled_clients in schedule_list %}
+            <tr {% if scheduled_clients.client_count == 4 %} class="alert-success"  {% endif %}>
+                <td>SC-{{scheduled_clients.id}}</td>
+                <td>{{scheduled_clients.first_name_S}}</td>
+                <td>{{scheduled_clients.last_name_S}}</td>
+                <td>{{scheduled_clients.coaching_type_course}}</td>
+                <td>{{scheduled_clients.sessions}}</td>
+                <td>{{scheduled_clients.my_time_field }}</td>
+                <td> 
+                {% if scheduled_clients.coaching_type_course.title.strip|lower in "personal coaching"|lower %}
+                  {{ scheduled_clients.client_count }}
+                {% else %}
+                  -
+                {% endif %}
+                
+                </td>
+                <td>
+                  {% if scheduled_clients.review_call == True %}
+                  <i class="fa-solid fa-check fw-bold" style="color: #25de6f;"></i>
+                  {% else %}
+                  <i class="fa-solid fa-xmark fw-bold" style="color: #f41576;"></i>
+                  {% endif %}
+                </td>
+                <td class="rounded bg-light text-center">
+                  <a href="{% url 'download_scheduled_client' scheduled_clients.id %}" class="btn text-secondary px-0  inline-input">
+                      <i class="fa-regular fa-eye fa-lg" title="view"></i>
+                  </a> 
+                  <a href="{% url 'edit_schedule' scheduled_clients.id %}" class="btn text-secondary px-0  inline-input">
+                    <i class="far fa-edit fa-lg"></i>
+                </a>                       
+                  <input style="width:18px ;height: 18px; border: 2px solid #848b91" class="inline-input form-check-input " type="checkbox" value="{{ scheduled_clients.id }}" name="scheduled_clients_delete">
+              </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  </form>
+</div>
+
+{% endif %}
+
+
+<!-- filtered -->
+{% if schedule_list_filtered %}
+<div class="container bg-white  p-2  rounded mt-3">
+
+  <div class="mute text-center mt-4 mb-4 container w-50">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      These are the clients have been registered to Schedule a call.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+  </div>
+  <form method="post" class="bg-white  p-2  rounded" action="{% url 'scheduled_clients_delete' %}">
+    {% csrf_token %}
+  <table class="table ">
+    <thead class="border-bottom  fw-bold">
+        <tr>
+            <td>id</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Course</td>
+            <td>Session Start</td>
+            <td>Session Ends</td>
+            <td>Session no.</td>
+            <td>Review  call</td>
+            <td class="text-center " width="20%">
+              <a href="{% url 'all_scheduled_clients' %}" title="Refresh" class="btn">
+                <i class="fa-solid fa-arrows-rotate fa-lg"></i> 
+              </a>
+
+              <button type="submit" class="btn" title="Delete">
+                  <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+              </button>
+              <!-- EXCEL -->
+              <a href="{% url 'download_scheduled_clients_excel' %}" class="btn"  title="download to excel">
+                <i class="fa-solid fa-file-excel fa-lg" style="color: #63efae;"></i>
+            </a>
+          </td>
+        </tr>
+    </thead>
+    <tbody  style="vertical-align: middle;">
+        {% for scheduled_clients in schedule_list_filtered %}
+            <tr {% if scheduled_clients.client_count == 4 %} class="alert-success"  {% endif %}>
+                <td>SC-{{scheduled_clients.id}}</td>
+                <td>{{scheduled_clients.first_name_S}}</td>
+                <td>{{scheduled_clients.last_name_S}}</td>
+                <td>{{scheduled_clients.coaching_type_course}}</td>
+                <td>{{scheduled_clients.sessions}}</td>
+                <td>{{scheduled_clients.my_time_field }}</td>
+                <td>
+                {% if scheduled_clients.coaching_type_course.title.strip|lower in "personal coaching"|lower %}
+                  {{ scheduled_clients.client_count }}
+                {% else %}
+                  -
+                {% endif %}
+                </td>
+                <td>
+                  {% if scheduled_clients.review_call == True %}
+                  <i class="fa-solid fa-check fw-bold" style="color: #25de6f;"></i>
+                  {% else %}
+                  <i class="fa-solid fa-xmark fw-bold" style="color: #f41576;"></i>
+                  {% endif %}
+                </td>
+                <td class="rounded bg-light text-center">
+                  <a href="{% url 'download_scheduled_client' scheduled_clients.id %}" class="btn text-secondary px-0  inline-input">
+                      <i class="fa-regular fa-eye fa-lg" title="view"></i>
+                  </a> 
+                  <a href="{% url 'edit_schedule' scheduled_clients.id %}" class="btn text-secondary px-0  inline-input">
+                      <i class="far fa-edit fa-lg"></i>
+                  </a>                       
+                  <input style="width:18px ;height: 18px; border: 2px solid #848b91" class="inline-input form-check-input " type="checkbox" value="{{ scheduled_clients.id }}" name="scheduled_clients_delete">
+
+              </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</form>
+</div>
+{% endif %}
+{% include 'footer.html' %}
+{% endblock content %}

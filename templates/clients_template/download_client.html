@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+    .line {
+  display: inline-block;
+  width: 100%;
+  border-top: 0.1px solid rgb(52, 52, 52);
+}
+</style>
+<br><br>
+          <div class="container mt-5">
+            <div class="text-center">
+                <h5 class="bg-light" > Details of - {{clients.first_name}} {{clients.last_name}} 
+                    <span class="badge bg-secondary">{{clients.date_added}}</span>
+                </h5>
+            </div>
+
+            <br>
+            <h5 class="text-center"> Personal Details</h5>
+            <div class="row gx-5">
+              <div class="col-4">
+                {% if clients.gender == "M" %}
+                    Gender : Male
+                {% elif clients.gender == "F"  %}
+                     Gender : Female
+                {% else %}
+                    Gender : N/A
+                {% endif %}
+              </div>
+              <div class="col-4">
+                DOB : {{clients.date_of_birth}}
+              </div>
+              <div class="col-4">
+                Address : {{clients.address }}
+              </div>
+            </div>
+
+            <div class="row gx-5">
+                <div class="col">
+                  Email : {{clients.email_id}}
+                </div>
+                <div class="col">
+                  Contact : {{clients.contact }}
+                </div>
+                <div class="col">
+                  Company name : {{clients.company_name }}
+                </div>
+              </div>
+
+              <hr>
+              <h5 class="text-center"> Coaching Details</h5>
+  
+              <div class="row gx-5">
+                  <div class="col text-center">
+                      Coaching type course : <strong>{{clients.coaching_type_course  }}</strong> 
+                  </div>
+              </div>          
+              
+              <span class='line'></span>
+              <div class="d-flex flex-column align-items-end mt-5">
+                <div class="text-center">
+                   <h5 class="fst-italic"> EdifyLabs  </h5>
+     
+                    Printed on : {{DT}} <br>
+                    By : {{auth_user}} <br> <br>
+                    <a href="{% url 'clients_list' %}" title="back" class="btn">
+                      <i class="fa-solid fa-square-caret-left fs-3" style="color: #555f72;"></i>
+                  </a>
+                    
+                    <button class="download-btn">Downloaded As PDF</button>
+                </div>
+              </div>
+          </div>
+
+
+<script>
+    const downloadBtn = document.querySelector(".download-btn");
+
+downloadBtn.addEventListener("click", () => {
+  window.print();
+});
+</script>
+
+{% endblock content %}

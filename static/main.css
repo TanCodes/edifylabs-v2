@@ -1,0 +1,18 @@
+footer .main-footer {
+    background: #000;
+    background-color: #000;
+}
+
+.main-footer {
+    background-color: #000;
+}
+
+.float-right.d-none.d-sm-inline::after {
+    content: " - Tanmay";
+}
+
+.card-body p .login-box-msg::after {
+    background: #000;
+    background-color: #000;
+    content: " - Tanmay";
+}

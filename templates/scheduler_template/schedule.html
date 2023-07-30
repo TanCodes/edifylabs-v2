@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br>
+
+<!-- SEARCH -->
+<div class="container mt-5" style="overflow-x:auto">
+    👋 Hello , <strong>{{auth_user}}</strong> , -> Schedule a Client
+    <form method="POST" action="{% url 'search_client_schedule' %}" class="form-inline mt-3">
+        {% csrf_token %}
+          <div style="display: inline-block;" class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+
+                <div class="input-group">
+                    <input  type="text" name="title" class="form-control rounded" placeholder="Search already added Clients to schedule"  />
+                    <button type="submit" class="btn btn-primary form-submit-button"> <i class="fas fa-search"></i></button>
+
+                    <div style="margin-left:20px ;">
+                      
+                        <a href="{% url 'schedule_client' %}" class="link-dark btn bg-secondary">
+                          <i class="fa-solid fa-rotate-right"></i>
+                        </a>
+                
+                       <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                        <i class="fa-regular fa-hand"></i>
+                       </button>
+                    </div>
+
+                  </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+{% if ScheduleForm %}
+<!-- FORM VIEW ONLY WHEN CLIENT IS ALREADY ADDED -->
+<div class="container mt-5 w-75 bg-white  p-3  rounded" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+    
+  <form action="{% url 'schedule_add' %}"  method="POST" autocomplete="on">
+    {% csrf_token %}
+
+      <div class="row g-3">
+
+        <div class="col-md-5">
+          <label for="firstName" class="form-label">First name</label>
+          {{ScheduleForm.first_name_S|as_crispy_field}}
+        </div>
+
+        <div class="col-md-5">
+          <label for="lastName" class="form-label">Last name</label>
+          {{ScheduleForm.last_name_S|as_crispy_field}}
+        </div>
+
+        <div class="col-md-2" >
+          <label for="review_call" class="form-label">Review call  </label>
+         {{ScheduleForm.review_call|as_crispy_field|safe}}
+        </div>
+
+        <div class="col-md-4" >
+          <label for="coaching" class="form-label">Coaching Type</label>
+          {{ScheduleForm.coaching_type_course|as_crispy_field|safe}}
+        </div>
+
+
+        <div class="col-md-4" >
+          <label for="sessions" class="form-label">Session Start</label>
+          {{ScheduleForm.sessions|as_crispy_field}}
+        </div>
+
+
+        <div class="col-md-4" >
+          <label for="my_time_field" class="form-label">Session End</label>
+          {{ScheduleForm.my_time_field|as_crispy_field}}
+        </div>
+
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12 ">
+          <hr>
+          <div class="col-md-12 text-center ">
+            <button style="background-color:#6f8af5;" type="submit" class="btn  btn-block btn-lg text-white float-end ">
+              <i class="fa-regular fa-calendar-check" style="color: #ffffff;"></i>
+              Schedule client
+            </button>
+          </div>
+        </div>
+      </div>
+
+  </form>
+
+</div>
+{% endif %}
+
+  <!-- FILTER -->
+<div class="container mt-5" style="overflow-x:auto">
+
+    <!-- FILTERED -->
+    {% if filter_title %}
+    <form method="post" action="{% url 'item_delete' %}">
+        {% csrf_token %}
+        <table class="table">
+            <thead class="border-bottom  fw-bold">
+                <tr>
+                    <td>id</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Email</td>
+                    <td>Course</td>
+                    <td>Added on</td>
+                </tr>
+            </thead>
+            <tbody  style="vertical-align: middle;">
+                {% for clients in filter_title %}
+                    <tr>
+                        <td>CL-{{clients.id}}</td>
+                        <td>{{clients.first_name}}</td>
+                        <td>{{clients.last_name}}</td>
+                        <td>{{clients.email_id}}</td>
+                        <td>{{clients.coaching_type_course}}</td>
+                        <td>{{clients.date_added}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    {% endif %}
+
+    <!-- ERROR -->
+    {% if error %}
+    <div class="alert alert-warning text-center" role="alert">
+        {{error}}
+    </div>
+    <div class="text-center">
+        ADD A NEW CLIENT FOR SCHEDULING <br> <br>
+        <a href="{% url 'home' %}" class="btn btn-outline-success">
+            <i class="fas fa-plus"></i> Add New
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+
+<!-- off canvas -->
+<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasTopLabel">Where you want to redirect ?</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-sm">
+          <a href="{% url 'all_scheduled_clients' %}" target="_blank" class="btn btn-outline-success">
+            <i class="fa-solid fa-reply-all fa-flip-horizontal"></i> GO TO ALL SCHEDULED CLIENTS
+          </a>
+        </div>
+        <div class="col-sm">
+          <a href="{% url 'clients_list' %}"  target="_blank" class="btn btn-outline-success">
+            <i class="fa-solid fa-reply-all fa-flip-horizontal"></i> GO TO All CLIENTS
+          </a>
+
+        </div>
+        <div class="col-sm">
+          <a href="{% url 'home' %}" class="btn btn-outline-success">
+            <i class="fas fa-plus"></i>  ADD CLIENT
+        </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}

@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+<title>{{page}}</title>
+{% block content %}
+
+<br>
+
+<div class="container mt-5" style="overflow-x:auto">
+    
+    <div class="container-fluid mt-2 mb-2">
+        <form method="POST" action="{% url 'search_client' %}">
+            {% csrf_token %}
+              <div style="display: inline-block;" class="row height d-flex justify-content-center align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input  type="text" name="title" class="form-control rounded" placeholder="Search clients"  />
+                        <button type="submit" class="btn btn-primary form-submit-button"> <i class="fas fa-search"></i></button>
+                        <div style="margin-left:6px ;">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                <i class="fa-regular fa-hand"></i>
+                            </button>
+
+                        </div>
+                        <div style="margin-left:10px ;">
+
+                            {% if filter_title %}
+                                <h6><span class="badge bg-secondary">  {{filter_title_total}}  results found</span></h6>  
+                            {% elif total_clients%}
+                            <h6><span class="badge bg-secondary"> {{total_clients}} results found</span></h6>  
+                                
+                            {% else %}
+                            <h6><span class="badge bg-secondary"> 0 results found</span></h6>   
+                            {% endif %}
+
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- FILTERED -->
+    {% if filter_title %}
+    <form method="post" class="bg-white p-2  rounded" action="{% url 'item_delete' %}">
+        {% csrf_token %}
+        <table class="table">
+            <thead class="border-bottom  fw-bold">
+                <tr>
+                    <td>id</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Email</td>
+                    <td>Course</td>
+                    <td class="text-center " width="20%">
+                        <a href="{% url 'clients_list' %}" title="Refresh" class="btn">
+                            <i class="fa-solid fa-arrows-rotate fa-lg"></i> 
+                        </a>
+                        <a href="{% url 'home' %}" class="btn"  title="Add a client">
+                            <i class="fa-regular fa-square-plus fa-lg" style="color: #609dd2;"></i>
+                        </a>
+
+                        <button type="submit" class="btn"  title="Delete">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+
+                         <!-- EXCEL -->
+                         <a href="{% url 'download_clients_excel' %}" class="btn"  title="download to excel">
+                            <i class="fa-solid fa-file-excel fa-lg" style="color: #63efae;"></i>
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody  style="vertical-align: middle;">
+                {% for clients in filter_title %}
+                    <tr>
+                        <td>CL-{{clients.id}}</td>
+                        <td>{{clients.first_name}}</td>
+                        <td>{{clients.last_name}}</td>
+                        <td>{{clients.email_id}}</td>
+                        <td>{{clients.coaching_type_course}}</td>
+                        <td class="rounded bg-light text-center">
+                            <a href="{% url 'download_client' clients.id %}" class="btn text-secondary px-0  inline-input">
+                                <i class="fa-regular fa-eye fa-lg" title="view"></i>
+                            </a> 
+                            <a href="{% url 'client_update' clients.id %}" class="btn text-secondary px-0  inline-input">
+                                <i class="far fa-edit fa-lg"></i>
+                            </a>                       
+                            <input style="width:18px ;height: 18px; border: 2px solid #848b91" class="inline-input form-check-input " type="checkbox" value="{{ clients.id }}" name="item_ids">
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <!-- IF NOT FILTERED -->
+    {% else %}
+    <form method="post" class="bg-white  p-2  rounded" action="{% url 'item_delete' %}">
+        {% csrf_token %}
+        <table class="table">
+            <thead class="border-bottom  fw-bold">
+                <tr>
+                    <td>id</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td>Email</td>
+                    <td>Course</td>
+                    <td class="text-center " width="20%">
+                        <a href="{% url 'clients_list' %}" title="Refresh" class="btn">
+                            <i class="fa-solid fa-arrows-rotate fa-lg"></i> 
+                        </a>
+                        <a href="{% url 'home' %}" class="btn"  title="Add a client">
+                            <i class="fa-regular fa-square-plus fa-lg" style="color: #609dd2;"></i>
+                        </a>
+
+                        <button type="submit" class="btn"  title="Delete">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+
+                         <!-- EXCEL -->
+                         <a href="{% url 'download_clients_excel' %}" class="btn"  title="download to excel">
+                            <i class="fa-solid fa-file-excel fa-lg" style="color: #63efae;"></i>
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: middle;">
+                {% for clients in clients_list %}
+                    <tr>
+                        <td>CL-{{clients.id}}</td>
+                        <td>{{clients.first_name}}</td>
+                        <td>{{clients.last_name}}</td>
+                        <td>{{clients.email_id}}</td>
+                        <td>{{clients.coaching_type_course}}</td>
+                        <td class="rounded bg-light text-center">
+                            <a href="{% url 'download_client' clients.id %}" class="btn text-secondary px-0  inline-input">
+                                <i class="fa-regular fa-eye fa-lg" title="view"></i>
+                            </a> 
+                                <a href="{% url 'client_update' clients.id  %}" class="btn text-secondary px-0  inline-input">
+                                    <i class="far fa-edit fa-lg"></i>
+                                </a>                       
+                                <input style="width:18px ;height: 18px; border: 2px solid #4e5052" class="inline-input form-check-input " type="checkbox" value="{{ clients.id }}" name="item_ids">  
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    {% endif %}
+        
+    <!-- ERROR -->
+    {% if error %}
+    <div class="alert alert-warning text-center" role="alert">
+        {{error}}
+    </div>
+    {% endif %}
+        
+</div>
+
+<!-- off  canvas -->
+<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasTopLabel">Where you want to redirect ?</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+  
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-sm">
+            <a href="{% url 'all_scheduled_clients' %}" target="_blank" class="btn btn-outline-success">
+              <i class="fa-solid fa-reply-all fa-flip-horizontal"></i> GO TO ALL SCHEDULED CLIENTS
+            </a>
+          </div>
+          <div class="col-sm">
+            <a href="{% url 'schedule_client' %}" class="btn btn-outline-success">
+                <i class="fas fa-plus"></i>  SCHEDULE A CLIENT
+            </a>
+  
+          </div>
+          <div class="col-sm">
+            <a href="{% url 'home' %}" class="btn btn-outline-success">
+              <i class="fas fa-plus"></i>  ADD CLIENT
+          </a>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  {% include 'footer.html' %}
+{% endblock content %}

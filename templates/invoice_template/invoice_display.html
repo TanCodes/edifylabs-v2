@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<br>
+
+<div class="container mt-5" style="overflow-x:auto">
+
+    <div class="container-fluid mt-2 mb-2">
+        <form method="POST" action="{% url 'search_invoice' %}">
+            {% csrf_token %}
+              <div style="display: inline-block;" class="row height d-flex justify-content-center align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input  type="text" name="title" class="form-control rounded" placeholder="Search Invoice"  />
+                        <button type="submit" class="btn btn-primary form-submit-button"> <i class="fas fa-search"></i></button>
+                        <div style="margin-left:6px ;">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                <i class="fa-regular fa-hand"></i>
+                            </button>
+
+                        </div>
+                        <div style="margin-left:10px ;">
+
+                            {% if filter_title %}
+                                <h6><span class="badge bg-secondary">  {{filter_title_total}}  results found</span></h6>  
+                            {% elif total_invoice %}
+                            <h6><span class="badge bg-secondary"> {{total_invoice}} results found</span></h6>  
+                                
+                            {% else %}
+                            <h6><span class="badge bg-secondary"> 0 results found</span></h6>   
+                            {% endif %}
+
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- IF  FILTERED -->
+    {% if filter_title %}
+
+    <form method="post" class="bg-white p-2  rounded" action="{% url 'invoice_item_delete' %}">
+        {% csrf_token %}
+        <table class="table">
+            <thead class="border-bottom  fw-bold">
+                <tr>
+                    <td>id</td>
+                    <td>Full name</td>
+                    <td>Invoice number</td>
+                    <td>Coaching type</td>
+                    <td>Total payable amount</td>
+                    <td class="text-center " width="20%">
+                        <a href="{% url 'invoice_display' %}" class="btn" title="Refresh">
+                            <i class="fa-solid fa-arrows-rotate fa-lg"></i> 
+                        </a>
+                        <a href="{% url 'invoice_dashboard' %}" class="btn" title="Generate invoice">
+                            <i class="fa-regular fa-square-plus fa-lg" style="color: #609dd2;"></i>
+                        </a>
+
+                        <button type="submit" class="btn" title="Delete">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                                             <!-- EXCEL -->
+                     <a href="{% url 'download_invoice_excel' %}" class="btn"  title="download to excel">
+                        <i class="fa-solid fa-file-excel fa-lg" style="color: #63efae;"></i>
+                    </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody style="vertical-align: middle;">
+                {% for invoice in filter_title %}
+                    <tr>
+                        <td>INV-{{invoice.id}}</td>
+                        <td>{{invoice.full_name_invoice}}</td>
+                        <td>{{invoice.invoice_number}}</td>
+                        <td>{{invoice.coaching_type_course_invoice}}</td>
+                        <td>{{invoice.total_amount_payable_invoice}}</td>
+                        <td class="rounded bg-light text-center">
+                            <a href="{% url 'invoice' invoice.id %}" class="btn text-secondary px-0  inline-input">
+                                <i class="fa-regular fa-eye fa-lg" title="view"></i>
+                            </a> 
+                    
+                                <input style="width:18px ;height: 18px; border: 2px solid #4e5052" class="inline-input form-check-input " type="checkbox" value="{{ invoice.id }}" name="item_ids_invoice">  
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <!-- IF NOT FILTERED -->
+    {% else %}
+        <form method="post" class="bg-white p-2  rounded" action="{% url 'invoice_item_delete' %}">
+            {% csrf_token %}
+            <table class="table">
+                <thead class="border-bottom  fw-bold">
+                    <tr>
+                        <td>id</td>
+                        <td>Full name</td>
+                        <td>Invoice number</td>
+                        <td>Coaching type</td>
+                        <td>Total payable amount</td>
+                        <td>Invoice generated</td>
+                        <td class="text-center " width="20%">
+                            <a href="{% url 'invoice_display' %}" class="btn" title="Refresh">
+                                <i class="fa-solid fa-arrows-rotate fa-lg"></i> 
+                            </a>
+                            <a href="{% url 'invoice_dashboard' %}" class="btn" title="Generate invoice">
+                                <i class="fa-regular fa-square-plus fa-lg" style="color: #609dd2;"></i>
+                            </a>
+
+                            <button type="submit" class="btn" title="Delete">
+                                <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                            </button>
+                                                 <!-- EXCEL -->
+                         <a href="{% url 'download_invoice_excel' %}" class="btn"  title="download to excel">
+                            <i class="fa-solid fa-file-excel fa-lg" style="color: #63efae;"></i>
+                        </a>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody style="vertical-align: middle;">
+                    {% for invoice in invoice_display %}
+                        <tr>
+                            <td>INV-{{invoice.id}}</td>
+                            <td>{{invoice.full_name_invoice}}</td>
+                            <td>{{invoice.invoice_number}}</td>
+                            <td>{{invoice.coaching_type_course_invoice}}</td>
+                            <td>{{invoice.total_amount_payable_invoice}}</td>
+                            <td>{{invoice.date_added_invoice}}</td>
+                            <td class="rounded bg-light text-center">
+                                <a href="{% url 'invoice' invoice.id %}" class="btn text-secondary px-0  inline-input">
+                                    <i class="fa-regular fa-eye fa-lg" title="view"></i>
+                                </a> 
+                        
+                                    <input style="width:18px ;height: 18px; border: 2px solid #4e5052" class="inline-input form-check-input " type="checkbox" value="{{ invoice.id }}" name="item_ids_invoice">  
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    {% endif %}
+        
+    <!-- ERROR -->
+    {% if error %}
+    <div class="alert alert-warning text-center" role="alert">
+        {{error}}
+    </div>
+    {% endif %}
+
+</div>
+{% include 'footer.html' %}
+{% endblock content %}

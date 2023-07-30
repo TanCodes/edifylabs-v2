@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<title>HOME | CLIENT | Edify Lab's Business Tool </title>
+
+
+{% block content %}
+<style>
+  .card {
+  width: 270px;
+  box-sizing: border-box;
+  padding: 1em;
+  border-radius: 25px;
+  color: white;
+  line-height: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.card.card1 {
+  background: #2BC0E4;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #e4eb85, #2BC0E4);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #e7ed79, #43caeb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}
+
+.card.card2 {
+  background: #56CCF2;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.card.card3{
+  background: #4AC29A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #BDFFF3, #4AC29A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #82d2c3, #4AC29A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.card.card4{
+  background: #EECDA3;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #EF629F, #EECDA3);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #EF629F, #EECDA3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js"></script>
+<br> <br> <br>
+<div class="container mt-3">
+
+  <div class="row ">
+    <div class="col-6">
+      <p class="float-start">  👋 Hello <strong>{{auth_user}}</strong>, -> VISUALIZER </p>
+    </div> 
+  </div>
+
+</div>
+
+<div class="container">
+  <div class="row text-center mt-2">
+    <div class="col-3">
+      <div class="card card1">
+        <h4>Total Clients Registered</h4><br> <br> 
+        <h2>{{total_clients}}
+          <i class="fa-solid fa-people-line" style="position: absolute; bottom: 15px; right: 10px; opacity: 0.8;"></i>
+        </h2>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card card2">
+        <h4>Total Scheduled Clients</h4><br> <br> 
+        <h2> {{total_scheduled}} 
+          <i class="fa-solid fa-people-arrows" style="position: absolute; bottom: 15px; right: 10px; opacity: 0.8;"></i>
+        </h2>
+      </div>
+    </div>
+
+    <div class="col-3">
+      <div class="card card3">
+        <h4>Total Invoice Generated</h4> <br> <br> 
+        <h2> {{total_invoices}}
+          <i class="fa-solid fa-file-invoice" style="position: absolute; bottom: 15px; right: 10px; opacity: 0.8;"></i>
+        </h2>
+      </div>
+    </div>
+
+    <div class="col-3">
+      <div class="card card4">
+        <h4>Total Amount payable</h4> <br> <br> 
+        <h3> {{total_amounts_payable}}
+          <i class="fa-solid fa-sack-dollar" style="position: absolute; bottom: 15px; right: 10px; opacity: 0.8;"></i>
+        </h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAPHS -->
+  <div class="row mt-5 gx-5">
+
+    <!-- bar -->
+    <div class="col-4">
+      <div class="d-flex justify-content-center mt-3">
+        <div class="chart-container" style="height: 200px;">
+        <strong> Bar graph : </strong>Total clients enrolled
+          <canvas class="mt-3" id="bar-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- bar -->
+    <div class="col-4">
+      <div class="d-flex justify-content-center mt-3">
+        <div class="chart-container" style="height: 200px;">
+        <strong> Bar graph : </strong>Total course purchased
+          <canvas class="mt-3" id="bar-chart-2"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- bar -->
+    <div class="col-4">
+      <div class="d-flex justify-content-center mt-3">
+        <div class="chart-container" style="height: 200px;">
+        <strong> Bar graph : </strong>Total Invoice Generated
+          <canvas class="mt-3" id="bar-chart-3"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- GRAPHS -->
+    <div class="row mt-5 gx-5">
+      
+      <!-- bar -->
+      <div class="col-4 mt-3">
+        <div class="d-flex justify-content-center mt-3">
+          <div class="chart-container" style="height: 200px;">
+          <strong> Bar graph : </strong>Number of Sessions in a month
+            <canvas class="mt-3" id="bar-chart-4"></canvas>
+          </div>
+        </div>
+      </div>
+  
+      <!-- pie -->
+      <div class="col-4 mt-3">
+        <div class="d-flex justify-content-center mt-3">
+          <div class="chart-container" style="width: 260px;">
+          <strong> Pie chart: </strong>Gender graph
+            <canvas class="mt-3" id="pie-chart"></canvas>
+          </div>
+        </div>
+      </div>
+  
+  
+    </div>
+
+</div>
+
+<!--  CAHRTJS SCRIPT -->
+<script>
+
+// pie chart
+new Chart(document.getElementById("pie-chart"), {
+type: 'pie',
+data: {
+  labels: {{gender_name|safe}},
+  datasets: [{
+    label: "Gender",
+    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#706d6e","#ab577d","#3251c9","#80eb34","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+    data: {{gender_count|safe}},
+  }]
+},
+
+});
+
+// bar chart
+new Chart(document.getElementById("bar-chart"), {
+type: 'bar',
+data: {
+  labels: {{months|safe}},
+  datasets: [{
+    label: "Clients",
+    backgroundColor: ["#c45850", "#ab577d","#3cba9f","#e8c3b9","#c45850","#706d6e","#ab577d","#3251c9","#80eb34","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+    data: {{c_counts|safe}},
+  }]
+},
+options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                type: 'linear',
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+
+
+});
+
+
+// bar chart
+new Chart(document.getElementById("bar-chart-2"), {
+type: 'bar',
+data: {
+  labels: {{course_name|safe}},
+  datasets: [{
+    label: "Course",
+    backgroundColor: ["#a2d2ff", "#ffafcc","#cdb4db","#e8c3b9","#c45850","#706d6e"],
+    data: {{course_count|safe}},
+  }]
+},
+options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                type: 'linear',
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+
+
+});
+
+
+// bar chart
+new Chart(document.getElementById("bar-chart-3"), {
+type: 'bar',
+data: {
+  labels: {{inv_months|safe}},
+  datasets: [{
+    label: "Invoice Generated",
+    backgroundColor: ["#fee440", "#a7c957", "#e85d04","#cdb4db","#e8c3b9","#c45850","#706d6e"],
+    data: {{invoice_counts_month|safe}},
+  }]
+},
+options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                type: 'linear',
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
+// bar chart
+new Chart(document.getElementById("bar-chart-4"), {
+type: 'bar',
+data: {
+  labels: {{session_months|safe}},
+  datasets: [{
+    label: "Sessions",
+    backgroundColor: ["#168aad", "#957fef", "#89c2d9","#cdb4db","#e8c3b9","#c45850","#706d6e"],
+    data: {{session_counts|safe}},
+  }]
+},
+options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                type: 'linear',
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
+
+</script>
+{% include 'footer.html' %}
+{% endblock %}
+ 

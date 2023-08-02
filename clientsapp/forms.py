@@ -24,8 +24,7 @@ class ClientForm(forms.ModelForm):
             regex=r'^[0-9]+$',
             message='Phone number should contain only numbers',
         ),
-    ], widget=forms.TextInput
-                              (attrs={'placeholder': 'e.g:  +91************'}))
+    ], widget=forms.TextInput(attrs={'placeholder': 'e.g:  +91************'}))
     
     date_of_birth = forms.DateField(widget=DateInput)
     email_id = forms.EmailField(widget=forms.EmailInput
@@ -65,3 +64,9 @@ class ClientForm(forms.ModelForm):
         dt_obj_two = self.cleaned_data['sessions_end']
         dt_str_end = dt_obj_two.strftime('%Y-%m-%d %H:%M')
         return dt_str_end
+
+    def clean_contact(self):
+        contact = self.cleaned_data['contact']
+        if not contact.isdigit():
+            raise forms.ValidationError('Phone number should contain only numbers')
+        return contact

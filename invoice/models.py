@@ -48,6 +48,7 @@ class Invoice(models.Model):
             print("--cgst" ,self.cgst_amount )
         self.total_amount_payable_invoice = self.total_amount_invoice + self.cgst_amount + self.sgst_amount + self.igst_amount
         
+        # Storing invoice number as year/month/count
         if not self.id:
             self.date_added_invoice = current_date.strftime('%d-%b-%y')
             
@@ -57,12 +58,14 @@ class Invoice(models.Model):
                 highest_invoice_number = highest_invoice.invoice_number
             else:
                 highest_invoice_number = None
-            
+
             # Calculate the new invoice number
             if highest_invoice_number:
                 parts = highest_invoice_number.split('/')
                 year, month, count = parts[0], parts[1], parts[2]
-                if year == current_date.strftime('%y') and month == current_date.strftime('%m'):
+                print(f"{year} {month} {count}")
+
+                if year == current_date.strftime('%y') and month == current_date.strftime('%m').lstrip('0'):
                     count = str(int(count) + 1)
                 else:
                     count = '1'
